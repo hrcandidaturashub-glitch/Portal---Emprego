@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Talento — Portal de Emprego em Moçambique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0d0d0d;
+      --paper: #f5f2eb;
+      --cream: #ede9df;
+      --accent: #d4501a;
+      --accent2: #1a5cd4;
+      --muted: #7a7568;
+      --border: #d6d1c4;
+      --card: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: var(--paper);
+      border-bottom: 1.5px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    nav .nav-links { display: flex; gap: 2rem; align-items: center; }
+    nav .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.9rem; font-weight: 400;
+      transition: color 0.2s;
+    }
+    nav .nav-links a:hover { color: var(--ink); }
+    .btn-nav {
+      background: var(--ink); color: var(--paper) !important;
+      padding: 0.5rem 1.2rem; border-radius: 6px;
+      font-weight: 500 !important; font-size: 0.85rem !important;
+      transition: background 0.2s !important;
+    }
+    .btn-nav:hover { background: var(--accent) !important; color: white !important; }
+
+    /* HERO */
+    .hero {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
+      padding: 5rem 2.5rem 4rem;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .hero-text { animation: fadeUp 0.7s ease both; }
+    .hero-tag {
+      display: inline-block;
+      background: var(--accent); color: white;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 0.3rem 0.8rem;
+      border-radius: 3px; margin-bottom: 1.2rem;
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -0.04em; margin-bottom: 1.2rem;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    .hero p {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.7; max-width: 420px; margin-bottom: 2rem;
+    }
+    .hero-stats {
+      display: flex; gap: 2rem;
+    }
+    .stat { border-left: 2px solid var(--accent); padding-left: 0.8rem; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 800; line-height: 1;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* HERO VISUAL */
+    .hero-visual {
+      animation: fadeUp 0.7s 0.15s ease both;
+      position: relative;
+    }
+    .hero-card-stack {
+      position: relative; height: 340px;
+    }
+    .hc {
+      position: absolute; border-radius: 12px;
+      padding: 1.4rem; background: var(--card);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+    .hc-1 { width: 300px; top: 20px; left: 40px; transform: rotate(-3deg); }
+    .hc-2 { width: 280px; top: 80px; left: 160px; z-index: 2; transform: rotate(1.5deg);
+      background: var(--ink); border-color: transparent; color: var(--paper); }
+    .hc-3 { width: 260px; top: 180px; left: 60px; z-index: 3; transform: rotate(-1deg); }
+    .hc-logo {
+      width: 32px; height: 32px; border-radius: 6px;
+      margin-bottom: 0.6rem; display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.85rem;
+    }
+    .hc-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .hc-sub { font-size: 0.75rem; opacity: 0.6; margin-bottom: 0.7rem; }
+    .hc-tag {
+      display: inline-block; font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; border-radius: 3px;
+    }
+    .hc-1 .hc-logo { background: #e8f0fe; color: #1a5cd4; }
+    .hc-1 .hc-tag { background: var(--cream); color: var(--muted); }
+    .hc-2 .hc-logo { background: rgba(255,255,255,0.15); color: white; }
+    .hc-2 .hc-tag { background: var(--accent); color: white; }
+    .hc-3 .hc-logo { background: #fef3e8; color: var(--accent); }
+    .hc-3 .hc-tag { background: #e8f7ee; color: #1a7a45; }
+
+    /* SEARCH */
+    .search-section {
+      background: var(--cream); border-top: 1.5px solid var(--border);
+      border-bottom: 1.5px solid var(--border);
+      padding: 2.5rem 2.5rem;
+    }
+    .search-inner { max-width: 1200px; margin: 0 auto; }
+    .search-inner h2 {
+      font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 1rem; letter-spacing: -0.02em;
+    }
+    .search-bar {
+      display: flex; gap: 0.6rem;
+      background: white; border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 0.4rem; flex-wrap: wrap;
+    }
+    .search-bar input, .search-bar select {
+      border: none; outline: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      background: transparent; padding: 0.6rem 0.8rem;
+      color: var(--ink); flex: 1; min-width: 140px;
+    }
+    .search-bar select { cursor: pointer; color: var(--muted); }
+    .search-divider { width: 1px; background: var(--border); align-self: stretch; }
+    .btn-search {
+      background: var(--accent); color: white;
+      border: none; border-radius: 7px;
+      padding: 0.7rem 1.6rem; font-family: 'Syne', sans-serif;
+      font-size: 0.88rem; font-weight: 700; cursor: pointer;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-search:hover { background: #b83d12; }
+    .filter-chips { display: flex; gap: 0.5rem; margin-top: 0.9rem; flex-wrap: wrap; }
+    .chip {
+      font-size: 0.78rem; padding: 0.3rem 0.9rem;
+      border: 1.5px solid var(--border); border-radius: 20px;
+      cursor: pointer; transition: all 0.2s; background: white;
+      font-family: 'DM Sans', sans-serif; color: var(--muted);
+    }
+    .chip:hover, .chip.active { border-color: var(--accent); color: var(--accent); background: #fff5f2; }
+
+    /* MAIN GRID */
+    .main-grid {
+      display: grid; grid-template-columns: 260px 1fr;
+      gap: 2rem; max-width: 1200px; margin: 0 auto;
+      padding: 3rem 2.5rem;
+    }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 80px; align-self: start; }
+    .filter-box {
+      background: var(--card); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 1.4rem; margin-bottom: 1rem;
+    }
+    .filter-box h3 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+    }
+    .filter-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.4rem 0; cursor: pointer;
+    }
+    .filter-item label {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.88rem; cursor: pointer;
+    }
+    .filter-item input[type="checkbox"] {
+      accent-color: var(--accent); width: 15px; height: 15px;
+    }
+    .filter-count {
+      font-size: 0.75rem; color: var(--muted);
+      background: var(--cream); padding: 0.1rem 0.5rem; border-radius: 3px;
+    }
+    .salary-range { margin-top: 0.5rem; }
+    .salary-range input[type="range"] {
+      width: 100%; accent-color: var(--accent); margin-bottom: 0.3rem;
+    }
+    .salary-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); }
+
+    /* JOBS */
+    .jobs-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    .jobs-header h2 {
+      font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800;
+    }
+    .jobs-count { color: var(--muted); font-size: 0.85rem; }
+    .sort-select {
+      border: 1.5px solid var(--border); border-radius: 6px;
+      padding: 0.4rem 0.8rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem; background: white; cursor: pointer;
+    }
+
+    .job-card {
+      background: var(--card); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      margin-bottom: 1rem; cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      animation: fadeUp 0.5s ease both;
+      position: relative; overflow: hidden;
+    }
+    .job-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px; background: transparent; transition: background 0.2s;
+    }
+    .job-card:hover { border-color: var(--accent); box-shadow: 0 6px 28px rgba(212,80,26,0.08); transform: translateY(-1px); }
+    .job-card:hover::before { background: var(--accent); }
+    .job-card.featured { border-color: var(--accent2); }
+    .job-card.featured::before { background: var(--accent2); }
+
+    .job-top { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .company-logo {
+      width: 46px; height: 46px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .job-meta { flex: 1; }
+    .job-title {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem;
+      margin-bottom: 0.15rem; letter-spacing: -0.02em;
+    }
+    .company-name { font-size: 0.85rem; color: var(--muted); }
+    .job-badges { display: flex; gap: 0.4rem; align-items: center; margin-left: auto; flex-shrink: 0; }
+    .badge {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 0.22rem 0.6rem; border-radius: 4px;
+    }
+    .badge-featured { background: #e8f0fe; color: var(--accent2); }
+    .badge-new { background: #e8f7ee; color: #1a7a45; }
+    .badge-remote { background: var(--cream); color: var(--muted); }
+
+    .job-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .job-tag {
+      font-size: 0.75rem; padding: 0.25rem 0.7rem;
+      background: var(--cream); color: var(--muted);
+      border-radius: 4px;
+    }
+
+    .job-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .job-details { display: flex; gap: 1.2rem; }
+    .job-detail { display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--muted); }
+    .job-detail svg { opacity: 0.6; }
+    .job-salary { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; }
+    .btn-apply {
+      background: var(--ink); color: var(--paper);
+      border: none; border-radius: 7px;
+      padding: 0.55rem 1.2rem; font-family: 'Syne', sans-serif;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-apply:hover { background: var(--accent); }
+    .btn-save {
+      background: transparent; border: 1.5px solid var(--border);
+      border-radius: 7px; width: 36px; height: 36px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s;
+    }
+    .btn-save:hover { border-color: var(--accent); }
+
+    .load-more {
+      text-align: center; margin-top: 2rem;
+    }
+    .btn-load {
+      background: transparent; border: 1.5px solid var(--border);
+      border-radius: 8px; padding: 0.8rem 2.5rem;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.88rem; cursor: pointer; transition: all 0.2s; color: var(--ink);
+    }
+    .btn-load:hover { border-color: var(--ink); background: var(--ink); color: white; }
+
+    /* COMPANIES STRIP */
+    .companies-strip {
+      background: var(--ink); color: var(--paper);
+      padding: 3rem 2.5rem; text-align: center;
+    }
+    .companies-strip h3 {
+      font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5; margin-bottom: 1.5rem;
+    }
+    .company-logos {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .co-logo {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem;
+      opacity: 0.7; transition: opacity 0.2s;
+    }
+    .co-logo:hover { opacity: 1; }
+
+    /* FOOTER */
+    footer {
+      background: var(--cream); border-top: 1.5px solid var(--border);
+      padding: 2rem 2.5rem; text-align: center;
+      font-size: 0.82rem; color: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .main-grid { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">talento<span>.</span></a>
+  <div class="nav-links">
+    <a href="#">Vagas</a>
+    <a href="#">Empresas</a>
+    <a href="#">Recursos</a>
+    <a href="#">Publicar Vaga</a>
+    <a href="#" class="btn-nav">Entrar</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section>
+  <div class="hero">
+    <div class="hero-text">
+      <span class="hero-tag">Portal de Emprego #1 em Moçambique</span>
+      <h1>O teu próximo<br/><em>grande passo</em><br/>começa aqui</h1>
+      <p>Conectamos talentos às melhores empresas em Moçambique. Candidata-te em segundos, com CV ou portfólio, e recebe respostas reais.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">1.800+</div>
+          <div class="stat-label">Vagas ativas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">340</div>
+          <div class="stat-label">Empresas parceiras</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">5.2k</div>
+          <div class="stat-label">Candidatos este mês</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hc hc-1">
+          <div class="hc-logo">BC</div>
+          <div class="hc-title">Analista de Crédito</div>
+          <div class="hc-sub">BCI Banco · Maputo</div>
+          <span class="hc-tag">Presencial</span>
+        </div>
+        <div class="hc hc-2">
+          <div class="hc-logo">MC</div>
+          <div class="hc-title" style="color:white">Engenheiro de Software</div>
+          <div class="hc-sub" style="color:rgba(255,255,255,0.5)">mCel · Maputo</div>
+          <span class="hc-tag">Urgente</span>
+        </div>
+        <div class="hc hc-3">
+          <div class="hc-logo">VM</div>
+          <div class="hc-title">Marketing Digital</div>
+          <div class="hc-sub">Vodacom MZ · Beira</div>
+          <span class="hc-tag">Novo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<section class="search-section">
+  <div class="search-inner">
+    <h2>Encontra a tua próxima oportunidade</h2>
+    <div class="search-bar">
+      <input type="text" placeholder="Cargo, empresa ou palavra-chave…" />
+      <div class="search-divider"></div>
+      <select>
+        <option value="">📍 Localização</option>
+        <option>Maputo</option>
+        <option>Beira</option>
+        <option>Nampula</option>
+        <option>Remoto</option>
+        <option>Tete</option>
+        <option>Quelimane</option>
+        <option>Todo Moçambique</option>
+      </select>
+      <div class="search-divider"></div>
+      <select>
+        <option value="">🏷 Área</option>
+        <option>Tecnologia</option>
+        <option>Design</option>
+        <option>Marketing</option>
+        <option>Finanças</option>
+        <option>Saúde</option>
+        <option>Educação</option>
+      </select>
+      <button class="btn-search">Pesquisar Vagas</button>
+    </div>
+    <div class="filter-chips">
+      <div class="chip active" onclick="toggleChip(this)">Todas</div>
+      <div class="chip" onclick="toggleChip(this)">Remoto</div>
+      <div class="chip" onclick="toggleChip(this)">Full-time</div>
+      <div class="chip" onclick="toggleChip(this)">Part-time</div>
+      <div class="chip" onclick="toggleChip(this)">Estágio</div>
+      <div class="chip" onclick="toggleChip(this)">Sénior</div>
+      <div class="chip" onclick="toggleChip(this)">Publicadas hoje</div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="main-grid">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="filter-box">
+      <h3>Tipo de contrato</h3>
+      <div class="filter-item"><label><input type="checkbox" checked> Full-time</label><span class="filter-count">1.840</span></div>
+      <div class="filter-item"><label><input type="checkbox"> Part-time</label><span class="filter-count">320</span></div>
+      <div class="filter-item"><label><input type="checkbox"> Freelance</label><span class="filter-count">580</span></div>
+      <div class="filter-item"><label><input type="checkbox"> Estágio</label><span class="filter-count">214</span></div>
+      <div class="filter-item"><label><input type="checkbox"> Contrato</label><span class="filter-count">940</span></div>
+    </div>
+    <div class="filter-box">
+      <h3>Regime de trabalho</h3>
+      <div class="filter-item"><label><input type="checkbox" checked> Remoto</label><span class="filter-count">1.200</span></div>
+      <div class="filter-item"><label><input type="checkbox"> Híbrido</label><span class="filter-count">980</span></div>
+      <div class="filter-item"><label><input type="checkbox"> Presencial</label><span class="filter-count">2.020</span></div>
+    </div>
+    <div class="filter-box">
+      <h3>Salário mensal</h3>
+      <div class="salary-range">
+        <input type="range" min="800" max="6000" value="3000" oninput="document.getElementById('salval').textContent='€'+this.value"/>
+        <div class="salary-labels"><span>€800</span><span id="salval">€3.000</span><span>€6.000+</span></div>
+      </div>
+    </div>
+    <div class="filter-box">
+      <h3>Experiência</h3>
+      <div class="filter-item"><label><input type="checkbox"> Sem experiência</label><span class="filter-count">180</span></div>
+      <div class="filter-item"><label><input type="checkbox"> 1–2 anos</label><span class="filter-count">620</span></div>
+      <div class="filter-item"><label><input type="checkbox"> 3–5 anos</label><span class="filter-count">1.100</span></div>
+      <div class="filter-item"><label><input type="checkbox"> +5 anos</label><span class="filter-count">860</span></div>
+    </div>
+  </aside>
+
+  <!-- JOBS LIST -->
+  <main>
+    <div class="jobs-header">
+      <div>
+        <h2>Vagas em destaque</h2>
+        <span class="jobs-count">1.824 vagas disponíveis</span>
+      </div>
+      <select class="sort-select">
+        <option>Mais recentes</option>
+        <option>Mais relevantes</option>
+        <option>Melhor salário</option>
+      </select>
+    </div>
+
+    <!-- JOB CARDS -->
+    <div id="job-list"></div>
+    <div class="load-more">
+      <button class="btn-load" onclick="loadMore()">Carregar mais vagas</button>
+    </div>
+  </main>
+</div>
+
+<!-- COMPANIES STRIP -->
+<section class="companies-strip">
+  <h3>Empresas que confiam em nós</h3>
+  <div class="company-logos">
+    <div class="co-logo" style="background:#1a5cd4;color:white">PW</div>
+    <div class="co-logo" style="background:#d4501a;color:white">NX</div>
+    <div class="co-logo" style="background:#1a7a45;color:white">GR</div>
+    <div class="co-logo" style="background:#7a1ad4;color:white">VL</div>
+    <div class="co-logo" style="background:#d4b01a;color:white">SL</div>
+    <div class="co-logo" style="background:#1ad4c8;color:#0d0d0d">TQ</div>
+    <div class="co-logo" style="background:#d41a8a;color:white">MK</div>
+    <div class="co-logo" style="background:#4a7a1a;color:white">FN</div>
+    <div class="co-logo" style="background:#1a4ad4;color:white">BL</div>
+    <div class="co-logo" style="background:#d4501a;color:white">RX</div>
+  </div>
+</section>
+
+<footer>
+  <a href="#" style="text-decoration:none;color:inherit;font-family:Syne,sans-serif;font-weight:800;">talento<span style="color:var(--accent)">.</span></a> &nbsp;·&nbsp; O portal de emprego feito para Moçambique &nbsp;·&nbsp; © 2026
+</footer>
+
+<script>
+const jobs = [
+  {
+    id:1, title:"Engenheiro de Software Sénior", company:"mCel Moçambique", logo:"MC", logoColor:"#1a5cd4", logoBg:"#e8f0fe",
+    tags:["Java","Spring Boot","REST API","MySQL"], location:"Maputo", type:"Híbrido",
+    salary:"75.000–110.000 MZN/mês", posted:"Hoje", featured:true, badge:"featured", badgeLabel:"Destaque"
+  },
+  {
+    id:2, title:"Analista Financeiro", company:"BCI — Banco", logo:"BC", logoColor:"#1a7a45", logoBg:"#e8f7ee",
+    tags:["Excel","SAP","Contabilidade","IFRS"], location:"Maputo", type:"Presencial",
+    salary:"55.000–80.000 MZN/mês", posted:"Hoje", isNew:true, badge:"new", badgeLabel:"Novo"
+  },
+  {
+    id:3, title:"Gestor de Projetos", company:"Mozal Alumínio", logo:"MZ", logoColor:"#d4501a", logoBg:"#fff5f2",
+    tags:["PMP","MS Project","Gestão de Equipa","Inglês"], location:"Maputo", type:"Presencial",
+    salary:"90.000–130.000 MZN/mês", posted:"Há 2 dias"
+  },
+  {
+    id:4, title:"Designer Gráfico", company:"NovaMídia MZ", logo:"NM", logoColor:"#7a1ad4", logoBg:"#f5e8fe",
+    tags:["Photoshop","Illustrator","Branding","Social Media"], location:"Beira", type:"Híbrido",
+    salary:"35.000–52.000 MZN/mês", posted:"Há 1 dia"
+  },
+  {
+    id:5, title:"Técnico de IT & Suporte", company:"Vodacom Moçambique", logo:"VM", logoColor:"#d4b01a", logoBg:"#fefae8",
+    tags:["Redes","Windows Server","Help Desk","Cisco"], location:"Nampula", type:"Presencial",
+    salary:"40.000–60.000 MZN/mês", posted:"Há 3 dias", badge:"remote", badgeLabel:"Interior"
+  },
+  {
+    id:6, title:"Especialista em Marketing Digital", company:"Shoprite MZ", logo:"SR", logoColor:"#1a7a45", logoBg:"#e8f7ee",
+    tags:["Meta Ads","SEO","Copywriting","Analytics"], location:"Maputo", type:"Híbrido",
+    salary:"45.000–65.000 MZN/mês", posted:"Há 4 dias"
+  },
+];
+
+function renderJobs(list) {
+  const container = document.getElementById('job-list');
+  container.innerHTML = '';
+  list.forEach((j, i) => {
+    const div = document.createElement('div');
+    div.className = 'job-card' + (j.featured ? ' featured' : '');
+    div.style.animationDelay = (i * 0.07) + 's';
+    div.innerHTML = `
+      <div class="job-top">
+        <div class="company-logo" style="background:${j.logoBg};color:${j.logoColor}">${j.logo}</div>
+        <div class="job-meta">
+          <div class="job-title">${j.title}</div>
+          <div class="company-name">${j.company}</div>
+        </div>
+        <div class="job-badges">
+          ${j.badge ? `<span class="badge badge-${j.badge}">${j.badgeLabel}</span>` : ''}
+        </div>
+      </div>
+      <div class="job-tags">${j.tags.map(t=>`<span class="job-tag">${t}</span>`).join('')}</div>
+      <div class="job-footer">
+        <div class="job-details">
+          <span class="job-detail">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${j.location}
+          </span>
+          <span class="job-detail">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            ${j.type}
+          </span>
+          <span class="job-detail">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${j.posted}
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <span class="job-salary">${j.salary}</span>
+          <button class="btn-save" title="Guardar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+          <button class="btn-apply">Candidatar</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function loadMore() {
+  const extra = [
+    {
+      id:7, title:"Enfermeiro(a) Sénior", company:"Hospital Central de Maputo", logo:"HC", logoColor:"#1a5cd4", logoBg:"#e8f0fe",
+      tags:["Cuidados Intensivos","Triagem","Pediatria"], location:"Maputo", type:"Presencial",
+      salary:"38.000–55.000 MZN/mês", posted:"Há 5 dias"
+    },
+    {
+      id:8, title:"Engenheiro Civil", company:"EDM — Electricidade", logo:"ED", logoColor:"#d4501a", logoBg:"#fff5f2",
+      tags:["AutoCAD","Gestão de Obras","Energias","Topografia"], location:"Tete", type:"Presencial",
+      salary:"80.000–120.000 MZN/mês", posted:"Há 2 dias", badge:"remote", badgeLabel:"Interior"
+    }
+  ];
+  const container = document.getElementById('job-list');
+  extra.forEach((j,i) => {
+    const div = document.createElement('div');
+    div.className = 'job-card';
+    div.style.animationDelay = (i*0.1)+'s';
+    div.innerHTML = `
+      <div class="job-top">
+        <div class="company-logo" style="background:${j.logoBg};color:${j.logoColor}">${j.logo}</div>
+        <div class="job-meta"><div class="job-title">${j.title}</div><div class="company-name">${j.company}</div></div>
+        <div class="job-badges">${j.badge?`<span class="badge badge-${j.badge}">${j.badgeLabel}</span>`:''}</div>
+      </div>
+      <div class="job-tags">${j.tags.map(t=>`<span class="job-tag">${t}</span>`).join('')}</div>
+      <div class="job-footer">
+        <div class="job-details">
+          <span class="job-detail"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.location}</span>
+          <span class="job-detail"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>${j.type}</span>
+          <span class="job-detail"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${j.posted}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <span class="job-salary">${j.salary}</span>
+          <button class="btn-save" title="Guardar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <button class="btn-apply">Candidatar</button>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+  document.querySelector('.btn-load').style.display = 'none';
+}
+
+function toggleChip(el) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+renderJobs(jobs);
+</script>
+</body>
+</html>
